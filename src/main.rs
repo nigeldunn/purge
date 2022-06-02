@@ -1,4 +1,13 @@
-use bevy::prelude::*;
+use bevy::{
+    input::{keyboard::KeyboardInput, ElementState},
+    input::mouse::{MouseButtonInput, MouseMotion, MouseWheel},
+    window::CursorMoved,
+    ecs::system::Res,
+    prelude::*,
+};
+use bevy_config_cam::ConfigCam;
+use bevy_egui::{egui, EguiContext, EguiPlugin};
+
 use leafwing_input_manager::prelude::*;
 use leafwing_input_manager::{errors::NearlySingularConversion, orientation::Direction};
 
@@ -6,7 +15,11 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugin(InputManagerPlugin::<Action>::default())
+        .add_plugin(EguiPlugin)
+        .add_plugin(ConfigCam)
+        .add_startup_system(spawn_arena)
         .add_startup_system(spawn_player)
+        .add_system(ui_example)
         .add_system(jump)
         .run();
 }
@@ -39,4 +52,30 @@ fn jump(query: Query<&ActionState<Action>, With<Player>>) {
     if action_state.just_pressed(Action::Jump) {
         println!("I'm jumping!");
     }
+}
+
+fn spawn_arena(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    commands
+        .spawn_bundle(PbrBundle {
+            mesh: meshes.add(Mesh::from(shape::Plane { size: 10. })),
+            material: materials.add(StandardMaterial {
+                base_color: Color::rgba(0.5, 0.5, 0.5, 1.0),
+                alpha_mode: AlphaMode::Blend,
+                unlit: true,
+                ..default()
+            }),
+            transform: Transform::from_translation(Vec3::new(1., 1., 1.)),
+            ..Default::default()
+        });
+}
+
+fn ui_example(mut egui_context: ResMut<EguiContext>) {
+    egui::Window::new("Hello").show(egui_context.ctx_mut(), |ui| {
+        ui.label("world");
+    });
 }

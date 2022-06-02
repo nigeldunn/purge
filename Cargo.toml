@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 bevy = { version = "0.7.0"}
 leafwing-input-manager = "0.3.0"
+bevy_egui = "0.14"
+bevy_config_cam = { version = "0.3.0"}
