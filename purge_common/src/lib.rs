@@ -1,3 +1,7 @@
+pub fn hello_world(name: String) -> String {
+    format!("Hello, {}!", name)
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
