@@ -1,0 +1,17 @@
+- name: fleet-spec-1
+  fleetSpec:
+    replicas: 2
+    template:
+      metadata:
+        labels:
+          foo: bar
+      spec:
+        ports:
+        - name: default
+          portPolicy: Dynamic
+          containerPort: 7654
+        template:
+          spec:
+            containers:
+            - name: simple-game-server
+              image: gcr.io/agones-images/simple-game-server:0.3

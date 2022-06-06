@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "purge_client", "purge_server", "purge_common",
+]
+resolver="2"
