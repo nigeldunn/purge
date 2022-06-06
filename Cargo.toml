@@ -5,3 +5,4 @@ members = [
     "purge_server",
     "purge_common",
 ]
+resolver = "2"
